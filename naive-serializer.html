@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+	<head>
+		<script src="../js-shared-utils/util.js" type="text/javascript" language="javascript"></script>
+		<script>
+				var obj = {
+					attr1: "one",
+					attr2: 2,
+					attr3: [ "three", 4 ],
+					attr4: function() { var foo="bar"; },
+					attr5: /.*/	
+				};
+
+			// didn't end up using indent, maybe implement this later
+			function buildindent( num ) {
+				var retval = "";
+				var mult = 2;
+				for( var i=0; i < ( num * mult ); i++ ) {
+					retval += " ";
+				}
+				return retval;
+			}
+
+			function serialize( obj ) {
+				var retval = "<" + obj.constructor.name + ">\n";
+				if( typeOf( obj ) == 'object' || typeOf( obj ) == 'array' ) {
+					for( var item in obj ) {
+						retval += serialize( obj[item] );	
+					}
+				}
+				else {
+					retval += obj + "\n";
+				}
+				retval += "</" + obj.constructor.name + ">\n";
+				return retval;
+			}	
+			function init() {
+				console.log( serialize( obj ) );	
+			}
+		</script>
+	</head>
+	<body onload="init();">
+	</body>
+</html>
