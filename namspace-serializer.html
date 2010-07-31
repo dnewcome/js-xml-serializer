@@ -1,0 +1,77 @@
+<!doctype html>
+<html>
+	<head>
+		<script src="../js-shared-utils/util.js" type="text/javascript" language="javascript"></script>
+		<script>
+			var obj = {
+				attr1: "one",
+				attr2: 2,
+				attr3: [ "three", 4 ],
+				attr4: function() { var foo="bar"; },
+				attr5: /.*/	
+			};
+
+			var obj2 = {
+				attr1: "two"
+			};
+
+			// do we need namespaces config if we put namespace spec inline
+			// in rules? - what about prefix names?
+			var namespaces = {
+				Object: "http://example.org/Object",
+				Array: "http://example.org/Array",
+				String: "http://example.org/String"
+			}
+
+			/*
+			var rules = {
+					Object: { nodetype: "element", nodename: "object", namespace: "http://example.org/Object", memberrules: {} },
+					Array: { nodetype: "element", nodename: "array" },
+					String: { nodetype: "attribute", nodename: "string" },
+					MyType: { nodetype: "element", nodename: "object", memberrules: {
+						member1: { nodetype: "element", nodename: "m1" }, 
+						member2: { nodetype: "element", nodename: "m1" } 
+					}},
+			}
+			*/
+			var rules = {
+					Object: {
+							__def__: { nodetype: "element", nodename: "obj", namespace: "http://example.org/" },
+							attr1: { nodetype: "element", nodename: "first", namespace: "http://example.org/" } 
+					},
+					Array: {
+							__def__: { nodetype: "element", nodename: "arr", namespace: "http://example.org/" },
+							attr1: { nodetype: "element", nodename: "first", namespace: "http://example.org/" } 
+					},
+					String: {
+							__def__: { nodetype: "element", nodename: "str", namespace: "http://example.org/" },
+							attr1: { nodetype: "element", nodename: "first", namespace: "http://example.org/" } 
+					}
+			}
+
+			// given obj ref and the name of its member reference
+			function serialize( obj, member, rules ) {
+				var rule = rules[ obj.constructor.name ][ member ];
+				if( rule == undefined ) {
+					rule = rules[ obj.constructor.name ][ "__def__" ];
+				}
+				var retval = "<" + rule.nodename + " xmlns:'" + rule.namespace + "'>\n";
+				if( typeOf( obj ) == 'object' || typeOf( obj ) == 'array' ) {
+					for( var item in obj ) {
+						retval += serialize( obj[item], item, rules );	
+					}
+				}
+				else {
+					retval += obj + "\n";
+				}
+				retval += "</" + rule.nodename + ">\n";
+				return retval;
+			}	
+			function init() {
+				console.log( serialize( obj2, null, rules ) );	
+			}
+		</script>
+	</head>
+	<body onload="init();">
+	</body>
+</html>
