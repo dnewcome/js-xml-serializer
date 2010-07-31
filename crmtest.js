@@ -34,18 +34,12 @@ var execute =
 			new Query( "foo" )
 		)
 	);
-/*
-var execute =
-	new Execute( 
-		new Request( 
-			new Query( "foo" )
-		)
-	);
-*/
+
 var namespaces = {
-	"http://schemas.microsoft.com/crm/2007/WebServices": "", 
+	"http://schemas.microsoft.com/crm/2007/WebServices": "ws", 
 	"http://www.w3.org/2001/XMLSchema-instance": "xsi", 
-	"http://schemas.microsoft.com/crm/2006/Query": "q1" 
+	"http://schemas.microsoft.com/crm/2006/Query": "q1",
+	"http://www.w3.org/2001/XMLSchema": "xs"
 }
 
 var exrules = {
@@ -59,7 +53,7 @@ var exrules = {
 			attr1: { nodetype: "element", nodename: "first", namespace: "http://example.org/" } 
 	},
 	String: {
-			__def__: { nodetype: "element", nodename: "str", namespace: "http://example.org/" },
+			__def__: { nodetype: "element", nodename: "str", namespace: "http://www.w3.org/2001/XMLSchema" },
 	},
 	Execute: {
 			__def__: { nodetype: "element", nodename: "Execute", namespace: "http://schemas.microsoft.com/crm/2007/WebServices" }
