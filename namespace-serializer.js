@@ -1,5 +1,22 @@
 // requires ../js-shared-utils/util.js
-function serialize( parent, member, obj, rules, namespaces ) {
+
+function serialize( parent, member, obj, rules, namespaces, debug ) {
+	/*
+	if( debug ) {
+		console.log( "Parent: " + parent.constructor.name );
+		console.log( "Object: " + obj.constructor.name );
+	}
+	*/
+
+	// write namespaces in the root element
+	var xmlns = "";
+	if( parent == null ) {
+		for( var namespace in namespaces ) {
+			var prefix = namespaces[ namespace ];
+			xmlns += "xmlns:" + prefix + "='" + namespace + "' ";
+		}	
+	}
+
 	var retval = "";
 	var rule;
 	if( parent != null ) {
@@ -19,17 +36,21 @@ function serialize( parent, member, obj, rules, namespaces ) {
 		}
 		// TODO: if prefix not found, we should set xmlns: to the namespace of the element, if 
 		// element is in a namespace
-		retval = "<" + prefix + rule.nodename + " " + processAttributes( obj, rules, namespaces ) + ">\n";
+		retval = "\n" + "<" + prefix + rule.nodename + " " + processAttributes( obj, rules, namespaces ) + " " + xmlns + ">";
 		if( typeOf( obj ) == 'object' || typeOf( obj ) == 'array' ) {
 			for( var item in obj ) {
 				retval += serialize( obj, item, obj[item], rules, namespaces );	
 			}
 		}
 		else {
-			retval += obj + "\n";
+			retval += obj;
 		}
-		retval += "</" + prefix + rule.nodename + ">\n";
+		retval += "</" + prefix + rule.nodename + ">";
 	}
+	else if( rule.nodetype == "content" ) {
+		retval += obj;
+	}
+
 	return retval;
 }	
 
