@@ -1,12 +1,8 @@
-// requires ../js-shared-utils/util.js
-
-function serialize( parent, member, obj, rules, namespaces, debug ) {
-	/*
-	if( debug ) {
-		console.log( "Parent: " + parent.constructor.name );
-		console.log( "Object: " + obj.constructor.name );
+function serialize( parent, member, obj, rules, namespaces ) {
+	if( rules == undefined ) {
+		var obj = parent;
+		return serialize_default( obj );
 	}
-	*/
 
 	// write namespaces in the root element
 	var xmlns = "";
@@ -28,7 +24,6 @@ function serialize( parent, member, obj, rules, namespaces, debug ) {
 	if( rule == undefined ) {
 		rule = rules[ obj.constructor.name ][ "__def__" ];
 	}
-	// TODO: do we need this check?
 	if( rule.nodetype == "element" ) {
 		var prefix = namespaces[ rule.namespace ] || rule.namespace || "";
 		if( prefix != "" ) {
@@ -50,7 +45,6 @@ function serialize( parent, member, obj, rules, namespaces, debug ) {
 	else if( rule.nodetype == "content" ) {
 		retval += obj;
 	}
-
 	return retval;
 }	
 
@@ -68,3 +62,18 @@ function processAttributes( obj, rules, namespaces ) {
 	}
 	return retval;
 }
+
+function serialize_default( obj ) {
+	var retval = "<" + obj.constructor.name + ">\n";
+	if( typeOf( obj ) == 'object' || typeOf( obj ) == 'array' ) {
+		for( var item in obj ) {
+			retval += serialize_default( obj[item] );	
+		}
+	}
+	else {
+		retval += obj + "\n";
+	}
+	retval += "</" + obj.constructor.name + ">\n";
+	return retval;
+}	
+
