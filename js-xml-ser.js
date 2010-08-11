@@ -1,3 +1,9 @@
+/**
+* js-xml-serializer is free software provided under the MIT license.
+*	See LICENSE file for full text of the license.
+*	Copyright 2010 Dan Newcome.
+*/
+
 function serialize( parent, member, obj, rules, namespaces ) {
 	if( rules == undefined ) {
 		var obj = parent;
