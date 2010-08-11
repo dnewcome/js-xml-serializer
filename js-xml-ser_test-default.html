@@ -1,0 +1,24 @@
+<!doctype html>
+<html>
+	<head>
+		<script src="typeOf.js" type="text/javascript" language="javascript"></script>
+		<script src="js-xml-ser.js" type="text/javascript" language="javascript"></script>
+		<script>
+			function MyClass( str ) {
+				this.mcAttr = str;	
+			}
+
+			var obj2 = {
+				attr1: "two",
+				attr2: new MyClass( "hello" ),
+				attr3: [ "three", "four" ]
+			};
+
+			function init() {
+				console.log( serialize( obj2 ) );	
+			}
+		</script>
+	</head>
+	<body onload="init();">
+	</body>
+</html>
