@@ -22,13 +22,13 @@ function serialize( parent, member, obj, rules, namespaces ) {
 	var retval = "";
 	var rule;
 	if( parent != null ) {
-		rule = rules[ parent.constructor.name ][ member ];
+		rule = rules[ getName( parent ) ][ member ];
 	}
 	else {
-		rule = rules[ obj.constructor.name ][ "__def__" ];
+		rule = rules[ getName( obj ) ][ "__def__" ];
 	}
 	if( rule == undefined ) {
-		rule = rules[ obj.constructor.name ][ "__def__" ];
+		rule = rules[ getName( obj ) ][ "__def__" ];
 	}
 	if( rule.nodetype == "element" ) {
 		var prefix = namespaces[ rule.namespace ] || rule.namespace || "";
@@ -37,7 +37,7 @@ function serialize( parent, member, obj, rules, namespaces ) {
 		}
 		// TODO: if prefix not found, we should set xmlns: to the namespace of the element, if 
 		// element is in a namespace
-		retval = "\n" + "<" + prefix + rule.nodename + " " + processAttributes( obj, rules, namespaces ) + " " + xmlns + ">";
+		retval = "\n" + "<" + prefix + rule.nodename + processAttributes( obj, rules, namespaces ) + getXmlns( xmlns ) + ">";
 		if( typeOf( obj ) == 'object' || typeOf( obj ) == 'array' ) {
 			for( var item in obj ) {
 				retval += serialize( obj, item, obj[item], rules, namespaces );	
@@ -57,20 +57,20 @@ function serialize( parent, member, obj, rules, namespaces ) {
 function processAttributes( obj, rules, namespaces ) {
 	var retval = "";
 	for( var item in obj ) {
-		var rule = rules[ obj.constructor.name ][ item ];
+		var rule = rules[ getName( obj ) ][ item ];
 		if( rule && rule.nodetype == "attribute" ) {
 			var prefix = namespaces[ rule.namespace ] || rule.namespace || "";
 			if( prefix != "" ) {
 				prefix += ":";
 			}
-			retval += prefix + rule.nodename + "='" + obj[ item ] + "'";
+			retval += " " + prefix + rule.nodename + "='" + obj[ item ] + "'";
 		}
 	}
 	return retval;
 }
 
 function serialize_default( obj ) {
-	var retval = "<" + obj.constructor.name + ">\n";
+	var retval = "<" + getName( obj ) + ">\n";
 	if( typeOf( obj ) == 'object' || typeOf( obj ) == 'array' ) {
 		for( var item in obj ) {
 			retval += serialize_default( obj[item] );	
@@ -79,7 +79,30 @@ function serialize_default( obj ) {
 	else {
 		retval += obj + "\n";
 	}
-	retval += "</" + obj.constructor.name + ">\n";
+	retval += "</" + getName( obj ) + ">\n";
 	return retval;
 }	
+
+/**
+* Performs some formatting on the namespace
+*/
+function getXmlns( name ) {
+	if( name == "" ) {
+		return "";
+	}
+	else {
+		return " " + name;
+	}
+}
+
+/**
+* getname from stack overflow 
+* http://stackoverflow.com/questions/332422/how-do-i-get-the-name-of-an-objects-type-in-javascript
+*/
+function getName( obj ) { 
+   var funcNameRegex = /function (.{1,})\(/;
+   var results = (funcNameRegex).exec((obj).constructor.toString());
+   return (results && results.length > 1) ? results[1] : "";
+};
+
 
