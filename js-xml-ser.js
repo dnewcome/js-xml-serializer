@@ -21,6 +21,10 @@ function serialize( parent, member, obj, rules, namespaces ) {
 
 	var retval = "";
 	var rule;
+	if( obj == null ) {
+		// don't serialize null values
+		return retval;
+	}
 	if( parent != null ) {
 		rule = rules[ getName( parent ) ][ member ];
 	}

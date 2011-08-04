@@ -1,0 +1,2 @@
+We might want to serialize null values as empty elements or attributes in the future.
+Currently a null value is ignored and removed from the serialized output entirely.
