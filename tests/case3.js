@@ -23,19 +23,16 @@ test("test of custom object no attr", function() {
 		"http://example.org/": "ex"
 	}
 
-	var actual = serialize( null, null, obj, rules, namespaces );	
+	var actual = jxs.serialize( obj, rules, namespaces );	
 	var expected = "\n<ex:myc xmlns:ex='http://example.org/' >\n" +
 		"<ex:String>hello</ex:String></ex:myc>";
 
-	console.log( actual );
-
-	ok( expected == actual, "test3 passed" );
+	equal( actual, expected, "test3 passed" );
 });
 
 
-test("test of custom object", function() {
-
-
+test("test of custom object", function() 
+{
 	function MyClass( str ) {
 		this.myAttr = str;	
 	}
@@ -56,11 +53,11 @@ test("test of custom object", function() {
 		"http://example.org/": "ex"
 	}
 
-	var actual = serialize( null, null, obj, rules, namespaces );	
+	var actual = jxs.serialize( obj, rules, namespaces );	
 	var expected = "\n<ex:myc xmlns:ex='http://example.org/' >\n" +
 		"<ex:mya>hello</ex:mya></ex:myc>";
 
-	ok( expected == actual, "all pass" );
+	equal( actual, expected, "all pass" );
 });
 
 test("test2 of custom object", function() {
@@ -87,8 +84,8 @@ test("test2 of custom object", function() {
 		"http://example.org/": "ex"
 	}
 
-	var actual = serialize( null, null, obj, rules, namespaces );	
+	var actual = jxs.serialize( obj, rules, namespaces );	
 	var expected = "\n<ex:myc ex:mya='hello' xmlns:ex='http://example.org/' ></ex:myc>"
 
-	ok( expected == actual, "test2 passed" );
+	equal( actual, expected, "test2 passed" );
 });

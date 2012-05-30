@@ -83,12 +83,12 @@ test( "crmquery serialization", function()
 		}
 	}
 
-	var actual = serialize( null, null, execute, exrules, namespaces ); 
+	var actual = jxs.serialize( execute, exrules, namespaces ); 
 	var expected = '\n' +
-	'<ws:Execute xmlns:ws='http://schemas.microsoft.com/crm/2007/WebServices' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xmlns:q1='http://schemas.microsoft.com/crm/2006/Query' xmlns:xs='http://www.w3.org/2001/XMLSchema' >\n' +
-	'<ws:Request xsi:type='RetrieveMultipleRequest'>\n' +
-	'<q1:Query>\n' +
-	'<xs:str>foo</xs:str></q1:Query></ws:Request></ws:Execute>\n';
+	"<ws:Execute xmlns:ws='http://schemas.microsoft.com/crm/2007/WebServices' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xmlns:q1='http://schemas.microsoft.com/crm/2006/Query' xmlns:xs='http://www.w3.org/2001/XMLSchema' >\n" +
+	"<ws:Request xsi:type='RetrieveMultipleRequest'>\n" +
+	"<q1:Query>\n" +
+	"<xs:str>foo</xs:str></q1:Query></ws:Request></ws:Execute>";
 
-	equal(actual, expected, expected);
+	equal( actual, expected, "assert equal" );
 });

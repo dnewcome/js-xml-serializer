@@ -31,7 +31,7 @@ test("test of compound object", function() {
 		"http://example.org/": "ex", 
 	}
 
-	var actual = serialize( null, null, obj2, rules, namespaces );	
+	var actual = jxs.serialize( obj2, rules, namespaces );	
 	var expected = "\n<ex:obj xmlns:ex='http://example.org/' >\n" +
 		"<ex:first>two</ex:first>\n" +
 		"<ex:myc-attr2>\n" +
@@ -40,5 +40,5 @@ test("test of compound object", function() {
 		"<ex:str>three</ex:str>\n" +
 		"<ex:str>four</ex:str></ex:arr></ex:obj>";
 
-	ok( expected == actual, "all pass" );
+	equal( actual, expected, "all pass" );
 });

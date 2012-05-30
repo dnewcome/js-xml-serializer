@@ -4,13 +4,13 @@ test("default serialization", function()
 		this.mcAttr = str;	
 	}
 
-	var obj2 = {
+	var obj = {
 		attr1: "two",
 		attr2: new MyClass( "hello" ),
 		attr3: [ "three", "four" ]
 	};
 
-	var actual = serialize( obj2 );
+	var actual = jxs.serialize( obj );
 	var expected = 
 		'<Object>\n' +
 		'<String>\n' +

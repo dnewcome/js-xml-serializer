@@ -24,11 +24,11 @@ test("serializing null attribute", function()
 		"http://example.org/": "ex"
 	}
 
-	var actual = serialize( null, null, obj, rules, namespaces );	
+	var actual = jxs.serialize( obj, rules, namespaces );	
 	var expected = "\n<ex:myc xmlns:ex='http://example.org/' >\n" +
 		"<ex:mya>hello</ex:mya></ex:myc>";
 
-	ok( expected == actual, "all pass" );
+	equal( actual, expected, "all pass" );
 });
 
 test("type and property name collision", function()
@@ -81,9 +81,6 @@ test("type and property name collision", function()
 		"<ex:part>\n" +
 		"<ex:partid>2</ex:partid></ex:part></ex:Array></ex:book>"; 
 
-	var actual = serialize( null, null, book_1, rules, namespaces );	
-	console.log( actual );
-	console.log( expected );
-
+	var actual = jxs.serialize( book_1, rules, namespaces );	
 	equal( actual, expected, "failed" );
 });
